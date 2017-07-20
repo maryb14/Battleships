@@ -21,10 +21,8 @@ export class MyBot {
             if(previousShot.WasHit == true) {
                 this.hitMap[this.getStringFromPosition(previousShot.Position)] = true;
             }
-            else {
-                //return this.getNextTarget(previousShot.Position);
-                return this.getNextTargetDiagonal(previousShot.Position);
-            }
+            //return this.getNextTarget(previousShot.Position);
+            return this.getNextTargetDiagonal(previousShot.Position);
         }
         return { Row: "A", Column: 1 };  
     }
