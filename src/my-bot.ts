@@ -1,4 +1,9 @@
 export class MyBot {
+
+    private hitMap : { [ pos: string] : boolean } = {};
+
+    private triedMap : { [ pos: string] : boolean } = {};
+
     public getShipPositions() {
         return [
             { StartingSquare: { Row: "A", Column: 1 }, EndingSquare : { Row: "A", Column: 5 } },
@@ -12,11 +17,14 @@ export class MyBot {
     public selectTarget(gamestate) {
         var previousShot = gamestate.MyShots && gamestate.MyShots[gamestate.MyShots.length-1];
         if(previousShot) {
-            var mypreviousShot = gamestate.MyShots[gamestate.MyShots.length - 1];
-            if(mypreviousShot.WasHit == true) {
-
+            this.triedMap[this.getStringFromPosition(previousShot.Position)] = true;
+            if(previousShot.WasHit == true) {
+                this.hitMap[this.getStringFromPosition(previousShot.Position)] = true;
             }
-            else return this.getNextTarget(previousShot.Position);
+            else {
+                //return this.getNextTarget(previousShot.Position);
+                return this.getNextTargetDiagonal(previousShot.Position);
+            }
         }
         return { Row: "A", Column: 1 };  
     }
@@ -25,16 +33,49 @@ export class MyBot {
 
     private getNextTarget(position) {
         //initially
-         return getNextPosition(position);
-        //a bit better
-
-    }
-
-    private getNextPosition(position) {
-         //initial code
         var column = this.getNextColumn(position.Column);
         var row = column === 1 ? this.getNextRow(position.Row) : position.Row;
         return { Row: row, Column: column }
+    }
+
+    private getNextTargetDiagonal(position) {
+        var rowIndex = position.Row.charCodeAt(0) - 64;
+        var column = position.Column;
+        var nextColumn;
+        var nextRowIndex;
+        //first passing
+        if(rowIndex % 2 == column % 2) {
+            nextColumn = column + 2;
+            if(nextColumn == 11) {
+                nextColumn = 2;
+            }
+            if(nextColumn == 12) {
+                if(rowIndex == 10) {
+                    nextColumn = 2;
+                }
+                else {
+                    nextColumn = 1;
+                }
+            }
+            nextRowIndex = nextRowIndex % 10 + 1;
+            return {Row: this.convertToChar(nextRowIndex), Column: nextColumn }
+        }
+        //second passing
+        else {
+            //nextColumn = column; nextRowIndex = rowIndex;
+            //while(this.triedMap[this.convertToChar(nextRowIndex) + nextColumn]){
+
+            //}
+            nextColumn = column + 2;
+            if(nextColumn == 11) {
+                nextColumn = 2;
+            }
+            if(nextColumn == 12) {
+                nextColumn = 1;
+            }
+            nextRowIndex = nextRowIndex % 10 + 1;
+            return {Row: this.convertToChar(nextRowIndex), Column: nextColumn }
+        }
     }
 
     private getNextRow(row) {
@@ -47,6 +88,18 @@ export class MyBot {
 
     private getNextColumn(column) {
         return column % 10 + 1;
+    }
+
+    private convertToChar(row: number) {
+        return String.fromCharCode(row + 64);
+    }
+
+    private getPositionFromIndices(row: number, column: number) {
+        return {Row: this.convertToChar(row), Column: column};
+    }
+
+    private getStringFromPosition(position){
+        return position.Row + position.Column;
     }
 }
 
