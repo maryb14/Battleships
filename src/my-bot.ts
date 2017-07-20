@@ -107,7 +107,7 @@ export class MyBot {
         }
     }
 
-    private hasTwoNeighbours(pos): boolean{
+    private hasTwoNeighbours(pos){
         var up = pos; up.Row = this.getPreviousRow(pos.Row);
         var upString = this.getStringFromPosition(up);
         var down = pos; down.Row = this.getNextRow(pos.Row);
