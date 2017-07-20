@@ -106,13 +106,13 @@ export class MyBot {
     }
 
     private hasTwoNeighbours(pos): boolean{
-        var up = pos; up.row = this.getPreviousRow(pos.row);
+        var up = pos; up.Row = this.getPreviousRow(pos.Row);
         var upString = this.getStringFromPosition(up);
-        var down = pos; down.row = this.getNextRow(pos.row);
+        var down = pos; down.Row = this.getNextRow(pos.Row);
         var downString = this.getStringFromPosition(down);
-        var left = pos; left.column --;
+        var left = pos; left.Column --;
         var leftString = this.getStringFromPosition(left);
-        var right = pos; right.column ++;
+        var right = pos; right.Column ++;
         var rightString = this.getStringFromPosition(right);
         return ((this.hitMap[leftString] && this.hitMap[rightString]) || (this.hitMap[upString] && this.hitMap[downString]));
     }
