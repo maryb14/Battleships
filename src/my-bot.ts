@@ -83,9 +83,7 @@ export class MyBot {
                     return newPos;
                 }
             }
-            nextColumn = column + 2;
-            nextRowIndex = rowIndex;
-            var newPos = {Row: this.convertToChar(nextRowIndex), Column: nextColumn };
+            var newPos = {Row: this.convertToChar(rowIndex), Column: column };
             var positionString = this.getStringFromPosition(newPos);
             while(this.triedMap[positionString]){
                 nextColumn = column + 2;
