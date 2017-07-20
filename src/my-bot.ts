@@ -64,7 +64,9 @@ export class MyBot {
         //second passing
         else {
             //take first dots with 2 hits as neighbours
-            while(this.hitSoFar < 15) {
+            var passed = 1;
+            while(passed <= 50) {
+                passed ++;
                 nextColumn = column + 2;
                 nextRowIndex = rowIndex;
                 if(nextColumn == 11) {
