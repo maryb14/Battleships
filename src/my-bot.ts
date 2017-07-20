@@ -12,12 +12,26 @@ export class MyBot {
     public selectTarget(gamestate) {
         var previousShot = gamestate.MyShots && gamestate.MyShots[gamestate.MyShots.length-1];
         if(previousShot) {
-            return this.getNextTarget(previousShot.Position);
+            var mypreviousShot = gamestate.MyShots[gamestate.MyShots.length - 1];
+            if(mypreviousShot.WasHit == true) {
+
+            }
+            else return this.getNextTarget(previousShot.Position);
         }
         return { Row: "A", Column: 1 };  
     }
 
+    private missedPreviousShot
+
     private getNextTarget(position) {
+        //initially
+         return getNextPosition(position);
+        //a bit better
+
+    }
+
+    private getNextPosition(position) {
+         //initial code
         var column = this.getNextColumn(position.Column);
         var row = column === 1 ? this.getNextRow(position.Row) : position.Row;
         return { Row: row, Column: column }
