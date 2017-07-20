@@ -29,8 +29,6 @@ export class MyBot {
         return { Row: "A", Column: 1 };  
     }
 
-    private missedPreviousShot
-
     private getNextTarget(position) {
         //initially
         var column = this.getNextColumn(position.Column);
