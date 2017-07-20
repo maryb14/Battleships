@@ -4,6 +4,8 @@ export class MyBot {
 
     private triedMap : { [ pos: string] : boolean } = {};
 
+    private hitSoFar = 0;
+
     public getShipPositions() {
         return [
             { StartingSquare: { Row: "A", Column: 1 }, EndingSquare : { Row: "A", Column: 5 } },
@@ -20,6 +22,7 @@ export class MyBot {
             this.triedMap[this.getStringFromPosition(previousShot.Position)] = true;
             if(previousShot.WasHit == true) {
                 this.hitMap[this.getStringFromPosition(previousShot.Position)] = true;
+                this.hitSoFar ++;
             }
             var nextPos = this.getNextTargetDiagonal(previousShot.Position);
             return nextPos;
@@ -60,28 +63,74 @@ export class MyBot {
         }
         //second passing
         else {
-            //nextColumn = column; nextRowIndex = rowIndex;
-            //while(this.triedMap[this.convertToChar(nextRowIndex) + nextColumn]){
-
-            //}
+            //take first dots with 2 hits as neighbours
+            while(this.hitSoFar < 15) {
+                nextColumn = column + 2;
+                nextRowIndex = rowIndex;
+                if(nextColumn == 11) {
+                    nextColumn = 2;
+                    nextRowIndex = nextRowIndex % 10 + 1;
+                }
+                if(nextColumn == 12) {
+                    nextColumn = 1;
+                    nextRowIndex = nextRowIndex % 10 + 1;
+                }
+                column = nextColumn;
+                rowIndex = nextRowIndex;
+                var newPos = {Row: this.convertToChar(nextRowIndex), Column: nextColumn };
+                var positionString = this.getStringFromPosition(newPos);
+                if(!this.triedMap[positionString] && this.hasTwoNeighbours(newPos)) {
+                    return newPos;
+                }
+            }
             nextColumn = column + 2;
             nextRowIndex = rowIndex;
-            if(nextColumn == 11) {
-                nextColumn = 2;
-                nextRowIndex = nextRowIndex % 10 + 1;
+            var newPos = {Row: this.convertToChar(nextRowIndex), Column: nextColumn };
+            var positionString = this.getStringFromPosition(newPos);
+            while(this.triedMap[positionString]){
+                nextColumn = column + 2;
+                nextRowIndex = rowIndex;
+                if(nextColumn == 11) {
+                    nextColumn = 2;
+                    nextRowIndex = nextRowIndex % 10 + 1;
+                }
+                if(nextColumn == 12) {
+                    nextColumn = 1;
+                    nextRowIndex = nextRowIndex % 10 + 1;
+                }
+                var newPos = {Row: this.convertToChar(nextRowIndex), Column: nextColumn };
+                var positionString = this.getStringFromPosition(newPos);
+                column = nextColumn;
+                rowIndex = nextRowIndex;
             }
-            if(nextColumn == 12) {
-                nextColumn = 1;
-                nextRowIndex = nextRowIndex % 10 + 1;
-            }
-            return {Row: this.convertToChar(nextRowIndex), Column: nextColumn }
+            return newPos;
         }
+    }
+
+    private hasTwoNeighbours(pos): boolean{
+        var up = pos; up.row = this.getPreviousRow(pos.row);
+        var upString = this.getStringFromPosition(up);
+        var down = pos; down.row = this.getNextRow(pos.row);
+        var downString = this.getStringFromPosition(down);
+        var left = pos; left.column --;
+        var leftString = this.getStringFromPosition(left);
+        var right = pos; right.column ++;
+        var rightString = this.getStringFromPosition(right);
+        return ((this.hitMap[leftString] && this.hitMap[rightString]) || (this.hitMap[upString] && this.hitMap[downString]));
     }
 
     private getNextRow(row) {
         var newRow = row.charCodeAt(0) + 1;
         if(newRow > 'J'.charCodeAt(0)) {
             return 'A';
+        }
+        return String.fromCharCode(newRow);
+    }
+
+    private getPreviousRow(row) {
+        var newRow = row.charCodeAt(0) - 1;
+        if(newRow < 'A'.charCodeAt(0)) {
+            return 'J';
         }
         return String.fromCharCode(newRow);
     }
