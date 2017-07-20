@@ -1,6 +1,7 @@
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import {MyBot} from './src/my-bot';
+import {DebugState} from './debugState'
 
 export class Router {
     public static route(): void {
@@ -25,6 +26,10 @@ export class Router {
         app.listen(app.get('port'), () => {
             console.log("Node app is running at localhost:" + app.get('port'));
         });
+
+        var d = new DebugState();
+        var gameState = d.state;
+        myBot.selectTarget(gameState);
     }
 }
 

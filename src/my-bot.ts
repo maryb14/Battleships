@@ -21,7 +21,8 @@ export class MyBot {
             if(previousShot.WasHit == true) {
                 this.hitMap[this.getStringFromPosition(previousShot.Position)] = true;
             }
-            return this.getNextTargetDiagonal(previousShot.Position);
+            var nextPos = this.getNextTargetDiagonal(previousShot.Position);
+            return nextPos;
         }
         return { Row: "A", Column: 1 };  
     }
@@ -41,18 +42,20 @@ export class MyBot {
         //first passing
         if(rowIndex % 2 == column % 2) {
             nextColumn = column + 2;
+            nextRowIndex = rowIndex;
             if(nextColumn == 11) {
                 nextColumn = 2;
+                nextRowIndex = nextRowIndex % 10 + 1;
             }
-            if(nextColumn == 12) {
+            else if(nextColumn == 12) {
                 if(rowIndex == 10) {
                     nextColumn = 2;
                 }
                 else {
                     nextColumn = 1;
                 }
+                nextRowIndex = nextRowIndex % 10 + 1;
             }
-            nextRowIndex = nextRowIndex % 10 + 1;
             return {Row: this.convertToChar(nextRowIndex), Column: nextColumn }
         }
         //second passing
@@ -62,13 +65,15 @@ export class MyBot {
 
             //}
             nextColumn = column + 2;
+            nextRowIndex = rowIndex;
             if(nextColumn == 11) {
                 nextColumn = 2;
+                nextRowIndex = nextRowIndex % 10 + 1;
             }
             if(nextColumn == 12) {
                 nextColumn = 1;
+                nextRowIndex = nextRowIndex % 10 + 1;
             }
-            nextRowIndex = nextRowIndex % 10 + 1;
             return {Row: this.convertToChar(nextRowIndex), Column: nextColumn }
         }
     }
