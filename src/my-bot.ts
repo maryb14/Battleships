@@ -79,13 +79,13 @@ export class MyBot {
                 rowIndex = nextRowIndex;
                 var newPos = {Row: this.convertToChar(nextRowIndex), Column: nextColumn };
                 var positionString = this.getStringFromPosition(newPos);
-                if(!this.triedMap[positionString] && this.hasTwoNeighbours(newPos)) {
+                if(this.triedMap[positionString] == undefined && this.hasTwoNeighbours(newPos)) {
                     return newPos;
                 }
             }
             var newPos = {Row: this.convertToChar(rowIndex), Column: column };
             var positionString = this.getStringFromPosition(newPos);
-            while(this.triedMap[positionString]){
+            while(this.triedMap[positionString] != undefined){
                 nextColumn = column + 2;
                 nextRowIndex = rowIndex;
                 if(nextColumn == 11) {
