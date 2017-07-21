@@ -1,3 +1,5 @@
+import {getPlacement} from './placements'
+
 export class MyBot {
 
     public hitMap : { [ pos: string] : boolean } = {};
@@ -7,13 +9,8 @@ export class MyBot {
     private hitSoFar = 0;
 
     public getShipPositions() {
-        return [
-            { StartingSquare: { Row: "A", Column: 1 }, EndingSquare : { Row: "A", Column: 5 } },
-            { StartingSquare: { Row: "C", Column: 1 }, EndingSquare : { Row: "C", Column: 4 } },
-            { StartingSquare: { Row: "E", Column: 1 }, EndingSquare : { Row: "E", Column: 3 } },
-            { StartingSquare: { Row: "G", Column: 1 }, EndingSquare : { Row: "G", Column: 3 } },
-            { StartingSquare: { Row: "I", Column: 1 }, EndingSquare : { Row: "I", Column: 2 } },
-        ]
+        var randomIndex = Math.floor(Math.random() * 4);
+        return getPlacement(randomIndex);
     }
 
     public selectTarget(gamestate) {
