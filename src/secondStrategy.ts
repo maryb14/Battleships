@@ -29,15 +29,18 @@ export class SecondStrategy {
             var nextRowIndex = iterPos.row.charCodeAt(0) - 64;
             if(nextColumn === 11) {
                 nextColumn = 3;
-                nextRowIndex = nextRowIndex % 10 + 1;
+                nextRowIndex = (nextRowIndex + 3) % 10;
+                if(nextRowIndex === 0) nextRowIndex = 10;
             }
             if(nextColumn === 12) {
                 nextColumn = 1;
-                nextRowIndex = nextRowIndex % 10 + 1;
+                nextRowIndex = (nextRowIndex + 3) % 10;
+                if(nextRowIndex === 0) nextRowIndex = 10;
             }
             if(nextColumn === 13) {
                 nextColumn = 2;
-                nextRowIndex = nextRowIndex % 10 + 1;
+                nextRowIndex = (nextRowIndex + 3) % 10;
+                if(nextRowIndex === 0) nextRowIndex = 10;
             }
             iterPos = new Position(Position.convertToChar(nextRowIndex), nextColumn);
             var positionString = iterPos.getString();  
