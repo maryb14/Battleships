@@ -20,7 +20,7 @@ export class SecondStrategy {
             }
             iterPos = iterPos.getNextPosition();
         }
-        iterPos = pos;
+        iterPos = new Position("A", 1);
         var positionString = iterPos.getString();
         var passedTrough : number = 0;
         while(triedMap[positionString] && passedTrough <= 100) {
