@@ -18,8 +18,8 @@ export function getPlacement(index: number) {
             { StartingSquare: { Row: "J", Column: 2 }, EndingSquare : { Row: "J", Column: 6 } },
             { StartingSquare: { Row: "C", Column: 10 }, EndingSquare : { Row: "F", Column: 10 } },
             { StartingSquare: { Row: "H", Column: 6 }, EndingSquare : { Row: "H", Column: 8 } },
-            { StartingSquare: { Row: "E", Column: 3 }, EndingSquare : { Row: "E", Column: 6 } },
-            { StartingSquare: { Row: "B", Column: 2 }, EndingSquare : { Row: "B", Column: 4 } },
+            { StartingSquare: { Row: "E", Column: 3 }, EndingSquare : { Row: "E", Column: 5 } },
+            { StartingSquare: { Row: "B", Column: 2 }, EndingSquare : { Row: "B", Column: 3 } },
         ]
     return [
             { StartingSquare: { Row: "A", Column: 1 }, EndingSquare : { Row: "A", Column: 5 } },
