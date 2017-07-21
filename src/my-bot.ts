@@ -56,7 +56,7 @@ export class MyBot {
         }
         iterPos = {Row: position.Row, Column: position.Column };
         var positionString = this.getStringFromPosition(iterPos);
-        while(!this.triedMap[positionString]) {
+        while(this.triedMap[positionString]) {
             var nextColumn = iterPos.Column + 2;
             var nextRowIndex = iterPos.Row.charCodeAt(0) - 64;
             if(nextColumn === 11) {
