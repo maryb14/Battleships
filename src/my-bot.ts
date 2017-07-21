@@ -127,7 +127,7 @@ export class MyBot {
 
     private hasTwoNeighbours(pos){
         var upString = this.getPreviousRow(pos.Row) + pos.Column;
-        var downString = this.getNextRow(pos.Row) + pos.Column;
+        var downString = this.getNextRowBad(pos.Row) + pos.Column;
         var leftString = pos.Row + (pos.Column - 1).toString();
         var rightString = pos.Row + (pos.Column + 1).toString();
         return ((this.hitMap[leftString] && this.hitMap[rightString]) || (this.hitMap[upString] && this.hitMap[downString]));
@@ -135,7 +135,7 @@ export class MyBot {
 
     private hasOneNeighbour(pos){
         var upString = this.getPreviousRow(pos.Row) + pos.Column;
-        var downString = this.getNextRow(pos.Row) + pos.Column;
+        var downString = this.getNextRowBad(pos.Row) + pos.Column;
         var leftString = pos.Row + (pos.Column - 1).toString();
         var rightString = pos.Row + (pos.Column + 1).toString();
         return (this.hitMap[leftString] || this.hitMap[rightString] || this.hitMap[upString] || this.hitMap[downString]);
