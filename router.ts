@@ -28,14 +28,14 @@ export class Router {
         });
 
         //some debugging
-        var d = new DebugState();
+        /*var d = new DebugState();
         var gameState = d.state;
         myBot.hitMap["A1"] = true;
         myBot.hitMap["A3"] = true;
         myBot.hitMap["A5"] = true;
         myBot.hitMap["C3"] = true;
         myBot.hitMap["C5"] = true;
-        myBot.selectTarget(gameState);
+        myBot.selectTarget(gameState);*/
         
     }
 }

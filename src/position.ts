@@ -25,7 +25,7 @@ export class Position {
             return (new Position(this.getPreviousRow(), this.column));
         }
     }
-    public getDownPosition(): Position{
+    public getDownPosition(): Position {
         if(this.row === "J") {
             return undefined;
         }
