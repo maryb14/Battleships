@@ -24,7 +24,7 @@ export class MyBot {
                 this.hitMap[this.getStringFromPosition(previousShot.Position)] = true;
                 this.hitSoFar ++;
             }
-            var nextPos = this.getNextTargetDiagonal(previousShot.Position);
+            var nextPos = this.getNextTarget2(previousShot.Position);
             return nextPos;
         }
         return { Row: "A", Column: 1 };  
@@ -37,74 +37,40 @@ export class MyBot {
         return { Row: row, Column: column }
     }
 
-    private getNextTargetDiagonal(position) {
-        var rowIndex = position.Row.charCodeAt(0) - 64;
-        var column = position.Column;
-        var nextColumn;
-        var nextRowIndex;
-        //first passing
-        if(rowIndex % 2 == column % 2) {
-            nextColumn = column + 2;
-            nextRowIndex = rowIndex;
-            if(nextColumn == 11) {
+    private getNextTarget2(position) {
+        var iterPos = {Row: "A", Column: 1};
+        while(iterPos.Row != "J" || iterPos.Column != 10) {
+            var positionString = this.getStringFromPosition(iterPos);
+            if(!this.triedMap[positionString] && this.hasTwoNeighbours(iterPos)){
+                return iterPos;
+            }
+            iterPos = this.getNextTarget(iterPos)
+        }
+        iterPos = {Row: "A", Column: 1};
+        while(iterPos.Row != "J" || iterPos.Column != 10) {
+            var positionString = this.getStringFromPosition(iterPos);
+            if(!this.triedMap[positionString] && this.hasOneNeighbour(iterPos)){
+                return iterPos;
+            }
+            iterPos = this.getNextTarget(iterPos)
+        }
+        iterPos = {Row: position.Row, Column: position.Column };
+        var positionString = this.getStringFromPosition(iterPos);
+        while(!this.triedMap[positionString]) {
+            var nextColumn = iterPos.Column + 2;
+            var nextRowIndex = iterPos.Row.charCodeAt(0) - 64;
+            if(nextColumn === 11) {
                 nextColumn = 2;
                 nextRowIndex = nextRowIndex % 10 + 1;
             }
-            else if(nextColumn == 12) {
-                if(rowIndex == 10) {
-                    nextColumn = 2;
-                }
-                else {
-                    nextColumn = 1;
-                }
+            if(nextColumn === 12) {
+                nextColumn = 1;
                 nextRowIndex = nextRowIndex % 10 + 1;
             }
-            return {Row: this.convertToChar(nextRowIndex), Column: nextColumn }
+            iterPos = {Row: this.convertToChar(nextRowIndex), Column: nextColumn };
+            var positionString = this.getStringFromPosition(iterPos);   
         }
-        //second passing
-        else {
-            //take first dots with 2 hits as neighbours
-            var passed = 1;
-            while(passed <= 50) {
-                passed ++;
-                nextColumn = column + 2;
-                nextRowIndex = rowIndex;
-                if(nextColumn == 11) {
-                    nextColumn = 2;
-                    nextRowIndex = nextRowIndex % 10 + 1;
-                }
-                if(nextColumn == 12) {
-                    nextColumn = 1;
-                    nextRowIndex = nextRowIndex % 10 + 1;
-                }
-                var newPos = {Row: this.convertToChar(nextRowIndex), Column: nextColumn };
-                var positionString = this.getStringFromPosition(newPos);
-                if(!this.triedMap[positionString] && this.hasTwoNeighbours(newPos)) {
-                    return newPos;
-                }
-                column = nextColumn;
-                rowIndex = nextRowIndex;
-            }
-            var newPos = {Row: this.convertToChar(rowIndex), Column: column };
-            var positionString = this.getStringFromPosition(newPos);
-            while(this.triedMap[positionString]){
-                nextColumn = column + 2;
-                nextRowIndex = rowIndex;
-                if(nextColumn == 11) {
-                    nextColumn = 2;
-                    nextRowIndex = nextRowIndex % 10 + 1;
-                }
-                if(nextColumn == 12) {
-                    nextColumn = 1;
-                    nextRowIndex = nextRowIndex % 10 + 1;
-                }
-                var newPos = {Row: this.convertToChar(nextRowIndex), Column: nextColumn };
-                var positionString = this.getStringFromPosition(newPos);
-                column = nextColumn;
-                rowIndex = nextRowIndex;
-            }
-            return newPos;
-        }
+        return iterPos;
     }
 
     private hasTwoNeighbours(pos){
@@ -113,6 +79,14 @@ export class MyBot {
         var leftString = pos.Row + (pos.Column - 1).toString();
         var rightString = pos.Row + (pos.Column + 1).toString();
         return ((this.hitMap[leftString] && this.hitMap[rightString]) || (this.hitMap[upString] && this.hitMap[downString]));
+    }
+
+    private hasOneNeighbour(pos){
+        var upString = this.getPreviousRow(pos.Row) + pos.Column;
+        var downString = this.getNextRow(pos.Row) + pos.Column;
+        var leftString = pos.Row + (pos.Column - 1).toString();
+        var rightString = pos.Row + (pos.Column + 1).toString();
+        return (this.hitMap[leftString] || this.hitMap[rightString] || this.hitMap[upString] || this.hitMap[downString]);
     }
 
     private getNextRow(row) {
