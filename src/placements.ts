@@ -3,8 +3,8 @@ export function getPlacement(index: number) {
     if(index == 1) return [
             { StartingSquare: { Row: "A", Column: 10 }, EndingSquare : { Row: "E", Column: 10 } },
             { StartingSquare: { Row: "C", Column: 3 }, EndingSquare : { Row: "C", Column: 6 } },
-            { StartingSquare: { Row: "I", Column: 7 }, EndingSquare : { Row: "E", Column: 9 } },
-            { StartingSquare: { Row: "I", Column: 3 }, EndingSquare : { Row: "I", Column: 6 } },
+            { StartingSquare: { Row: "I", Column: 7 }, EndingSquare : { Row: "I", Column: 9 } },
+            { StartingSquare: { Row: "I", Column: 3 }, EndingSquare : { Row: "I", Column: 5 } },
             { StartingSquare: { Row: "E", Column: 4 }, EndingSquare : { Row: "E", Column: 5 } },
         ]
     if(index == 2) return [
