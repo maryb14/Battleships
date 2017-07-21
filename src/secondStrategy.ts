@@ -25,23 +25,26 @@ export class SecondStrategy {
         var passedTrough : number = 0;
         while(triedMap[positionString] && passedTrough <= 100) {
             passedTrough++;
-            var nextColumn = iterPos.column + 3;
-            var nextRowIndex = iterPos.row.charCodeAt(0) - 64;
+            var nextColumn = iterPos.column + 1;
+            var nextRowIndex = iterPos.row.charCodeAt(0) - 64 + 1;
             if(nextColumn === 11) {
-                nextColumn = 3;
-                nextRowIndex = (nextRowIndex + 3) % 10;
+                nextColumn = 1;
+                nextRowIndex = (nextRowIndex + 2) % 10;
                 if(nextRowIndex === 0) nextRowIndex = 10;
             }
-            if(nextColumn === 12) {
+            if(nextRowIndex === 11) {
+                nextRowIndex = 1;
+            }
+            /*if(nextColumn === 12) {
                 nextColumn = 1;
-                nextRowIndex = (nextRowIndex + 3) % 10;
+                nextRowIndex = (nextRowIndex + 1) % 10;
                 if(nextRowIndex === 0) nextRowIndex = 10;
             }
             if(nextColumn === 13) {
                 nextColumn = 2;
-                nextRowIndex = (nextRowIndex + 3) % 10;
+                nextRowIndex = (nextRowIndex + 1) % 10;
                 if(nextRowIndex === 0) nextRowIndex = 10;
-            }
+            }*/
             iterPos = new Position(Position.convertToChar(nextRowIndex), nextColumn);
             var positionString = iterPos.getString();  
         }
