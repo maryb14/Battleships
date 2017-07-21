@@ -22,12 +22,63 @@ export class MyBot {
             this.triedMap[this.getStringFromPosition(previousShot.Position)] = true;
             if(previousShot.WasHit) {
                 this.hitMap[this.getStringFromPosition(previousShot.Position)] = true;
+                this.tryToMatchMoreAsTried(previousShot.Position);
                 this.hitSoFar ++;
             }
             var nextPos = this.getNextTarget2(previousShot.Position);
             return nextPos;
         }
         return { Row: "A", Column: 1 };  
+    }
+
+    private tryToMatchMoreAsTried(pos){
+        var upString = this.getPreviousRow(pos.Row) + pos.Column;
+        var upPos = {Row: this.getPreviousRow(pos.Row), Column: pos.Column};
+        var downString = this.getNextRowBad(pos.Row) + pos.Column;
+        var downPos = {Row: this.getNextRowBad(pos.Row), Column: pos.Column};
+        var leftString = pos.Row + (pos.Column - 1).toString();        
+        var leftPos = {Row: pos.Row, Column: pos.Column - 1};
+        var rightString = pos.Row + (pos.Column + 1).toString();
+        var rightPos = {Row: pos.Row, Column: pos.Column - 1}
+        var thisString = this.getStringFromPosition(pos);
+        if(this.hitMap[thisString] && this.hitMap[upString]) {
+            this.markLeftRight(pos);
+            this.markLeftRight(upPos);
+        }
+        if(this.hitMap[thisString] && this.hitMap[downString]) {
+            this.markLeftRight(pos);
+            this.markLeftRight(downPos);
+        }
+        if(this.hitMap[thisString] && this.hitMap[leftString]) {
+            this.markUpDown(pos);
+            this.markUpDown(leftPos);
+        }
+        if(this.hitMap[thisString] && this.hitMap[rightString]) {
+            this.markUpDown(pos);
+            this.markUpDown(rightPos);
+        }
+    }
+
+    private markLeftRight(pos){
+        var leftString = pos.Row + (pos.Column - 1).toString();
+        var rightString = pos.Row + (pos.Column + 1).toString();
+        if(pos.Column > 1) {
+            this.triedMap[leftString] = true;
+        }
+        if(pos.Column < 10) {
+            this.triedMap[rightString] = true;
+        }
+    }
+
+    private markUpDown(pos){
+        var upString = this.getPreviousRow(pos.Row) + pos.Column;
+        var downString = this.getNextRow(pos.Row) + pos.Column;
+        if(pos.Row != "A") {
+            this.triedMap[upString] = true;
+        }
+        if(pos.Row != "J") {
+            this.triedMap[downString] = true;
+        }
     }
 
     private getNextTarget(position) {
@@ -96,11 +147,18 @@ export class MyBot {
         }
         return String.fromCharCode(newRow);
     }
+    private getNextRowBad(row) {
+        var newRow = row.charCodeAt(0) + 1;
+        if(newRow > 'J'.charCodeAt(0)) {
+            return '';
+        }
+        return String.fromCharCode(newRow);
+    }
 
     private getPreviousRow(row) {
         var newRow = row.charCodeAt(0) - 1;
         if(newRow < 'A'.charCodeAt(0)) {
-            return 'J';
+            return "";
         }
         return String.fromCharCode(newRow);
     }
