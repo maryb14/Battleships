@@ -29,7 +29,7 @@ export class SecondStrategy {
             var nextRowIndex = iterPos.row.charCodeAt(0) - 64 + 1;
             if(nextColumn === 11) {
                 nextColumn = 1;
-                nextRowIndex = (nextRowIndex + 1) % 10;
+                nextRowIndex = (nextRowIndex + 2) % 10;
                 if(nextRowIndex === 0) nextRowIndex = 10;
             }
             if(nextRowIndex === 11) {
