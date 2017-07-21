@@ -27,9 +27,16 @@ export class Router {
             console.log("Node app is running at localhost:" + app.get('port'));
         });
 
-        // var d = new DebugState();
-        // var gameState = d.state;
-        // myBot.selectTarget(gameState);
+        /* some debugging
+        var d = new DebugState();
+        var gameState = d.state;
+        myBot.hitMap["A1"] = true;
+        myBot.hitMap["A3"] = true;
+        myBot.hitMap["A5"] = true;
+        myBot.hitMap["C3"] = true;
+        myBot.hitMap["C5"] = true;
+        myBot.selectTarget(gameState);
+        */
     }
 }
 

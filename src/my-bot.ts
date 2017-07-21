@@ -1,6 +1,6 @@
 export class MyBot {
 
-    private hitMap : { [ pos: string] : boolean } = {};
+    public hitMap : { [ pos: string] : boolean } = {};
 
     private triedMap : { [ pos: string] : boolean } = {};
 
@@ -20,7 +20,7 @@ export class MyBot {
         var previousShot = gamestate.MyShots && gamestate.MyShots[gamestate.MyShots.length-1];
         if(previousShot) {
             this.triedMap[this.getStringFromPosition(previousShot.Position)] = true;
-            if(previousShot.WasHit == true) {
+            if(previousShot.WasHit) {
                 this.hitMap[this.getStringFromPosition(previousShot.Position)] = true;
                 this.hitSoFar ++;
             }
@@ -77,13 +77,13 @@ export class MyBot {
                     nextColumn = 1;
                     nextRowIndex = nextRowIndex % 10 + 1;
                 }
-                column = nextColumn;
-                rowIndex = nextRowIndex;
                 var newPos = {Row: this.convertToChar(nextRowIndex), Column: nextColumn };
                 var positionString = this.getStringFromPosition(newPos);
                 if(!this.triedMap[positionString] && this.hasTwoNeighbours(newPos)) {
                     return newPos;
                 }
+                column = nextColumn;
+                rowIndex = nextRowIndex;
             }
             var newPos = {Row: this.convertToChar(rowIndex), Column: column };
             var positionString = this.getStringFromPosition(newPos);
@@ -108,14 +108,10 @@ export class MyBot {
     }
 
     private hasTwoNeighbours(pos){
-        var up = pos; up.Row = this.getPreviousRow(pos.Row);
-        var upString = this.getStringFromPosition(up);
-        var down = pos; down.Row = this.getNextRow(pos.Row);
-        var downString = this.getStringFromPosition(down);
-        var left = pos; left.Column --;
-        var leftString = this.getStringFromPosition(left);
-        var right = pos; right.Column ++;
-        var rightString = this.getStringFromPosition(right);
+        var upString = this.getPreviousRow(pos.Row) + pos.Column;
+        var downString = this.getNextRow(pos.Row) + pos.Column;
+        var leftString = pos.Row + (pos.Column - 1).toString();
+        var rightString = pos.Row + (pos.Column + 1).toString();
         return ((this.hitMap[leftString] && this.hitMap[rightString]) || (this.hitMap[upString] && this.hitMap[downString]));
     }
 

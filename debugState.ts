@@ -59,9 +59,9 @@ export class DebugState {
                   {
                      "Position":{
                         "Row":"C",
-                        "Column":10
+                        "Column":2
                      },
-                     "WasHit":true
+                     "WasHit":false
                   }
                ],
                "OpponentsShots":[
