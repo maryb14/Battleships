@@ -108,14 +108,18 @@ export class MyBot {
         iterPos = {Row: position.Row, Column: position.Column };
         var positionString = this.getStringFromPosition(iterPos);
         while(this.triedMap[positionString]) {
-            var nextColumn = iterPos.Column + 2;
+            var nextColumn = iterPos.Column + 3;
             var nextRowIndex = iterPos.Row.charCodeAt(0) - 64;
             if(nextColumn === 11) {
-                nextColumn = 2;
+                nextColumn = 3;
                 nextRowIndex = nextRowIndex % 10 + 1;
             }
             if(nextColumn === 12) {
                 nextColumn = 1;
+                nextRowIndex = nextRowIndex % 10 + 1;
+            }
+            if(nextColumn === 13) {
+                nextColumn = 2;
                 nextRowIndex = nextRowIndex % 10 + 1;
             }
             iterPos = {Row: this.convertToChar(nextRowIndex), Column: nextColumn };
