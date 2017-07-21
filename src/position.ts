@@ -78,7 +78,7 @@ export class Position {
 
     public getNextPosition(): Position {
         var nextColumn: number = this.column % 10 + 1;
-        var nextRow: string = ((this.column === 1) ? (this.getNextRow()) : (this.row));
+        var nextRow: string = ((nextColumn === 1) ? (this.getNextRow()) : (this.row));
         return (new Position(nextRow, nextColumn));
     }
     public static convertToChar(row: number) {

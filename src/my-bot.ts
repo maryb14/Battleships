@@ -2,6 +2,7 @@ import {getPlacement} from './placements'
 import {SecondStrategy} from './secondStrategy'
 import {Position} from './position'
 import {BasicStrategy} from './basicStrategy'
+
 export class MyBot {
 
     public hitMap : { [ pos: string] : boolean } = {};
@@ -16,7 +17,7 @@ export class MyBot {
     public selectTarget(gamestate) {
         var previousShot = gamestate.MyShots && gamestate.MyShots[gamestate.MyShots.length-1];
         if(previousShot) {
-            var pos = new Position(previousShot.Row, previousShot.Column);
+            var pos = new Position(previousShot.Position.Row, previousShot.Position.Column);
             var posString = pos.getString();
             this.triedMap[posString] = true;
             if(previousShot.WasHit) {
@@ -26,7 +27,7 @@ export class MyBot {
             var strategy = new SecondStrategy();
             //var strategy = new BasicStrategy();
             var nextPos = strategy.getNextTarget(pos, this.triedMap, this.hitMap);
-            return nextPos;
+            return {Row: nextPos.row, Column: nextPos.column };
         }
         return { Row: "A", Column: 1 };  
     }

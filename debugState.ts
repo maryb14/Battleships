@@ -58,8 +58,8 @@ export class DebugState {
                "MyShots":[
                   {
                      "Position":{
-                        "Row":"C",
-                        "Column":2
+                        "Row":"A",
+                        "Column":1
                      },
                      "WasHit":false
                   }
