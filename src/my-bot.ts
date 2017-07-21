@@ -7,7 +7,7 @@ export class MyBot {
 
     public hitMap : { [ pos: string] : boolean } = {};
 
-    private triedMap : { [ pos: string] : boolean } = {};
+    public triedMap : { [ pos: string] : boolean } = {};
 
     public getShipPositions() {
         var randomIndex = Math.floor(Math.random() * 4);
