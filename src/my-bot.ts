@@ -2,6 +2,7 @@ import {getPlacement} from './placements'
 import {SecondStrategy} from './secondStrategy'
 import {Position} from './position'
 import {BasicStrategy} from './basicStrategy'
+import {RandomStrategy} from './randomStrategy'
 
 export class MyBot {
 
@@ -22,7 +23,8 @@ export class MyBot {
                 var posString = pos.getString();
                 triedMap = this.tryToMatchMoreAsTried(pos, triedMap, hitMap);
             }
-            var strategy = new SecondStrategy();
+            var strategy = new RandomStrategy();
+            //var strategy = new SecondStrategy();
             //var strategy = new BasicStrategy();
             var nextPos = strategy.getNextTarget(pos, triedMap, hitMap);
             return {Row: nextPos.row, Column: nextPos.column };
