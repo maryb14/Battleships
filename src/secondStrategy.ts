@@ -26,7 +26,7 @@ export class SecondStrategy {
         var positionString = iterPos.getString();
         var passedTrough : number = 0;
         var hitSoFar = Object.keys(hitMap).length;
-        if(hitSoFar >= 12) {
+        if(hitSoFar >= 13) {
             while(triedMap[positionString] && passedTrough <= 100) {
                 passedTrough++;
                 var nextColumn = iterPos.column + 2;
