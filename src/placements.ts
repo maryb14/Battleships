@@ -9,7 +9,7 @@ export function getPlacement(index: number) {
         ]
     if(index == 2) return [
             { StartingSquare: { Row: "A", Column: 5 }, EndingSquare : { Row: "E", Column: 5 } },
-            { StartingSquare: { Row: "G", Column: 5 }, EndingSquare : { Row: "J", Column: 5 } },
+            { StartingSquare: { Row: "H", Column: 2 }, EndingSquare : { Row: "H", Column: 5 } },
             { StartingSquare: { Row: "A", Column: 8 }, EndingSquare : { Row: "C", Column: 8 } },
             { StartingSquare: { Row: "E", Column: 8 }, EndingSquare : { Row: "F", Column: 8 } },
             { StartingSquare: { Row: "H", Column: 8 }, EndingSquare : { Row: "J", Column: 8 } },
