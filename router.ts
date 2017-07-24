@@ -1,6 +1,7 @@
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import {MyBot} from './src/my-bot';
+import {DebugState} from './debugState'
 
 export class Router {
     public static route(): void {
