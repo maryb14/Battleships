@@ -23,9 +23,9 @@ export function getPlacement(index: number) {
         ]
     return [
             { StartingSquare: { Row: "A", Column: 1 }, EndingSquare : { Row: "A", Column: 5 } },
-            { StartingSquare: { Row: "C", Column: 1 }, EndingSquare : { Row: "C", Column: 4 } },
-            { StartingSquare: { Row: "E", Column: 1 }, EndingSquare : { Row: "E", Column: 3 } },
-            { StartingSquare: { Row: "G", Column: 1 }, EndingSquare : { Row: "G", Column: 3 } },
+            { StartingSquare: { Row: "A", Column: 10 }, EndingSquare : { Row: "D", Column: 10 } },
+            { StartingSquare: { Row: "F", Column: 1 }, EndingSquare : { Row: "F", Column: 3 } },
+            { StartingSquare: { Row: "G", Column: 7 }, EndingSquare : { Row: "G", Column: 9 } },
             { StartingSquare: { Row: "I", Column: 1 }, EndingSquare : { Row: "I", Column: 2 } },
         ]
 }
