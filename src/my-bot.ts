@@ -32,7 +32,9 @@ export class MyBot {
         return { Row: "A", Column: 1 };  
     }
 
-    private tryToMatchMoreAsTried(pos: Position){
+
+    //function which marks as tried (but not hits) the squares around two consecutive squares that we hit
+    private tryToMatchMoreAsTried(pos: Position) {
         var upPos = pos.getUpPosition();
         var upString = (upPos) ? (upPos.getString()) : "";
         var downPos = pos.getDownPosition();
