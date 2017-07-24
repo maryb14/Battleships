@@ -27,19 +27,24 @@ export class RandomStrategy {
             availablePos0.push(firstPos);
         }
         iterPos = firstPos.getNextPosition();
+        //array of available position with 0 neighbours tried
         var availablePos0 : Position[] = [];
+        //array of available position with 1 neighbour tried
         var availablePos1 : Position[] = [];
+        //array of available position with at least 2 neighbours tried
         var availablePos2 : Position[] = [];
         while(iterPos.row != firstPos.row || iterPos.column != firstPos.column) {
             if(!triedMap[iterPos.getString()]) {
                 if(!iterPos.hasOneNeighbour(triedMap)) 
                     availablePos0.push(iterPos);
-                else if(!iterPos.hasTwoNeighbours)
+                else if(!iterPos.hasTwoNeighbours(triedMap))
                     availablePos1.push(iterPos);
                 else availablePos2.push(iterPos);
             }
             iterPos = iterPos.getNextPosition();
         }
+        //this strategy goes through the three arrays in order and randomly picks an available positions
+        //from the first one that contains some positions
         if(availablePos0.length > 0) {
             var randomIndex = Math.floor(Math.random() * availablePos0.length);
             return availablePos0[randomIndex];

@@ -26,11 +26,6 @@ export class Router {
         app.listen(app.get('port'), () => {
             console.log("Node app is running at localhost:" + app.get('port'));
         });
-
-        //some debugging code
-        var d = new DebugState();
-        var gameState = d.state;
-        myBot.selectTarget(gameState);        
     }
 }
 

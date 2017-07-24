@@ -26,6 +26,8 @@ export class SecondStrategy {
         var positionString = iterPos.getString();
         var passedTrough : number = 0;
         var hitSoFar = Object.keys(hitMap).length;
+        //if we hit almost all of the boats, jump 1 column at a time,
+        //otherwise, jump 2 columns
         if(hitSoFar >= 13) {
             while(triedMap[positionString] && passedTrough <= 100) {
                 passedTrough++;
