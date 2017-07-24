@@ -47,18 +47,26 @@ export class MyBot {
         if(this.hitMap[thisString] && this.hitMap[upString]) {
             this.markLeftRight(pos);
             this.markLeftRight(upPos);
+            this.markDiagonal(pos);
+            this.markDiagonal(upPos);
         }
         if(this.hitMap[thisString] && this.hitMap[downString]) {
             this.markLeftRight(pos);
             this.markLeftRight(downPos);
+            this.markDiagonal(pos);
+            this.markDiagonal(downPos);
         }
         if(this.hitMap[thisString] && this.hitMap[leftString]) {
             this.markUpDown(pos);
             this.markUpDown(leftPos);
+            this.markDiagonal(pos);
+            this.markDiagonal(leftPos);
         }
         if(this.hitMap[thisString] && this.hitMap[rightString]) {
             this.markUpDown(pos);
             this.markUpDown(rightPos);
+            this.markDiagonal(pos);
+            this.markDiagonal(rightPos);
         }
     }
 
@@ -85,6 +93,15 @@ export class MyBot {
         }
         if(downString && downString != "") {
             this.triedMap[downString] = true;
+        }
+    }
+
+    private markDiagonal(pos) {
+        var diagonalPositions: Position[] = pos.getDiagonalPositions();
+        for(var i = 0; i < diagonalPositions.length; ++i){
+            if(diagonalPositions[i]) {
+                this.triedMap[diagonalPositions[i].getString()] = true;
+            }
         }
     }
 }
