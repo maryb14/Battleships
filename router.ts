@@ -14,8 +14,6 @@ export class Router {
         app.use(bodyParser.json());
 
         app.get('/GetShipPositions', (req, res) => {
-            myBot.hitMap = {};
-            myBot.triedMap = {};
             let positions = myBot.getShipPositions();
             res.send(positions);
         });

@@ -5,36 +5,54 @@ import {BasicStrategy} from './basicStrategy'
 
 export class MyBot {
 
-    public hitMap : { [ pos: string] : boolean } = {};
-
-    public triedMap : { [ pos: string] : boolean } = {};
-
     public getShipPositions() {
         var randomIndex = Math.floor(Math.random() * 4);
         return getPlacement(randomIndex);
     }
 
     public selectTarget(gamestate) {
+        var hitMap : { [ pos: string] : boolean } = {};
+        var triedMap : { [ pos: string] : boolean } = {};
         var previousShot = gamestate.MyShots && gamestate.MyShots[gamestate.MyShots.length-1];
         if(previousShot) {
-            var pos = new Position(previousShot.Position.Row, previousShot.Position.Column);
-            var posString = pos.getString();
-            this.triedMap[posString] = true;
-            if(previousShot.WasHit) {
-                this.hitMap[posString] = true;
-                this.tryToMatchMoreAsTried(pos);
+            hitMap = this.getHitMap(gamestate.MyShots);
+            triedMap = this.getTriedMap(gamestate.MyShots);
+            for(var i = 0; i < gamestate.MyShots.length; ++i) {
+                var pos = new Position(gamestate.MyShots[i].Position.Row, gamestate.MyShots[i].Position.Column);
+                var posString = pos.getString();
+                triedMap = this.tryToMatchMoreAsTried(pos, triedMap, hitMap);
             }
             var strategy = new SecondStrategy();
             //var strategy = new BasicStrategy();
-            var nextPos = strategy.getNextTarget(pos, this.triedMap, this.hitMap);
+            var nextPos = strategy.getNextTarget(pos, triedMap, hitMap);
             return {Row: nextPos.row, Column: nextPos.column };
         }
         return { Row: "A", Column: 1 };  
     }
 
+    private getHitMap(shots): { [ pos: string] : boolean } {
+        var hitMap : { [ pos: string] : boolean } = {};
+        for(var i = 0; i < shots.length; ++i) {
+            var pos = new Position(shots[i].Position.Row, shots[i].Position.Column);
+            var posString = pos.getString();
+            if(shots[i].Washit) hitMap[posString] = true;
+        }
+        return hitMap;
+    }
+
+    private getTriedMap(shots): { [ pos: string] : boolean } {
+        var triedMap : { [ pos: string] : boolean } = {};
+        for(var i = 0; i < shots.length; ++i) {
+            var pos = new Position(shots[i].Position.Row, shots[i].Position.Column);
+            var posString = pos.getString();
+            triedMap[posString] = true;
+        }
+        return triedMap;
+    }
+
 
     //function which marks as tried (but not hits) the squares around two consecutive squares that we hit
-    private tryToMatchMoreAsTried(pos: Position) {
+    private tryToMatchMoreAsTried(pos: Position, triedMap: { [ pos: string] : boolean }, hitMap: { [ pos: string] : boolean }) : { [ pos: string] : boolean } {
         var upPos = pos.getUpPosition();
         var upString = (upPos) ? (upPos.getString()) : "";
         var downPos = pos.getDownPosition();
@@ -44,65 +62,69 @@ export class MyBot {
         var rightPos = pos.getRightPosition();
         var rightString = ((rightPos) ? (rightPos.getString()) : "");
         var thisString = pos.getString();
-        if(this.hitMap[thisString] && this.hitMap[upString]) {
-            this.markLeftRight(pos);
-            this.markLeftRight(upPos);
-            this.markDiagonal(pos);
-            this.markDiagonal(upPos);
+        if(hitMap[thisString] && hitMap[upString]) {
+            triedMap = this.markLeftRight(pos, triedMap);
+            triedMap = this.markLeftRight(upPos, triedMap);
+            triedMap = this.markDiagonal(pos, triedMap);
+            triedMap = this.markDiagonal(upPos, triedMap);
         }
-        if(this.hitMap[thisString] && this.hitMap[downString]) {
-            this.markLeftRight(pos);
-            this.markLeftRight(downPos);
-            this.markDiagonal(pos);
-            this.markDiagonal(downPos);
+        if(hitMap[thisString] && hitMap[downString]) {
+            triedMap = this.markLeftRight(pos, triedMap);
+            triedMap = this.markLeftRight(downPos, triedMap);
+            triedMap = this.markDiagonal(pos, triedMap);
+            triedMap = this.markDiagonal(downPos, triedMap);
         }
-        if(this.hitMap[thisString] && this.hitMap[leftString]) {
-            this.markUpDown(pos);
-            this.markUpDown(leftPos);
-            this.markDiagonal(pos);
-            this.markDiagonal(leftPos);
+        if(hitMap[thisString] && hitMap[leftString]) {
+            triedMap = this.markUpDown(pos, triedMap);
+            triedMap = this.markUpDown(leftPos, triedMap);
+            triedMap = this.markDiagonal(pos, triedMap);
+            triedMap = this.markDiagonal(leftPos, triedMap);
         }
-        if(this.hitMap[thisString] && this.hitMap[rightString]) {
-            this.markUpDown(pos);
-            this.markUpDown(rightPos);
-            this.markDiagonal(pos);
-            this.markDiagonal(rightPos);
+        if(hitMap[thisString] && hitMap[rightString]) {
+            triedMap = this.markUpDown(pos, triedMap);
+            triedMap = this.markUpDown(rightPos, triedMap);
+            triedMap = this.markDiagonal(pos, triedMap);
+            triedMap = this.markDiagonal(rightPos, triedMap);
         }
+        return triedMap;
     }
 
-    private markLeftRight(pos){
+    private markLeftRight(pos, triedMap: { [ pos: string] : boolean }) : { [ pos: string] : boolean }{
         var leftPos = pos.getLeftPosition();
         var leftString = (leftPos) ? (leftPos.getString()) : "";
         var rightPos = pos.getRightPosition();
         var rightString = ((rightPos) ? (rightPos.getString()) : "");
         if(leftString && leftString != "") {
-            this.triedMap[leftString] = true;
+            triedMap[leftString] = true;
         }
         if(rightString && rightString != "") {
-            this.triedMap[rightString] = true;
+            triedMap[rightString] = true;
         }
+        return triedMap;
     }
 
-    private markUpDown(pos){
+    private markUpDown(pos, triedMap: { [ pos: string] : boolean }): { [ pos: string] : boolean }{
         var upPos = pos.getUpPosition();
         var upString = (upPos) ? (upPos.getString()) : "";
         var downPos = pos.getDownPosition();
         var downString = (downPos) ? (downPos.getString()) : "";
         if(upString && upString != "") {
-            this.triedMap[upString] = true;
+            triedMap[upString] = true;
         }
         if(downString && downString != "") {
-            this.triedMap[downString] = true;
+            triedMap[downString] = true;
         }
+        return triedMap;
     }
 
-    private markDiagonal(pos) {
+    private markDiagonal(pos, triedMap: { [ pos: string] : boolean }) : { [ pos: string] : boolean } {
         var diagonalPositions: Position[] = pos.getDiagonalPositions();
         for(var i = 0; i < diagonalPositions.length; ++i){
             if(diagonalPositions[i]) {
-                this.triedMap[diagonalPositions[i].getString()] = true;
+                triedMap[diagonalPositions[i].getString()] = true;
             }
         }
+        return triedMap;
     }
 }
 
