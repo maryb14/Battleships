@@ -84,4 +84,18 @@ export class Position {
     public static convertToChar(row: number) {
         return String.fromCharCode(row + 64);
     }
+    public getDiagonalPositions(): Position[] {
+        var diagPosArray: Position[] = [];
+        var leftPos = this.getLeftPosition();
+        var rightPos = this.getRightPosition();
+        var upLeftPos = (leftPos) ? (leftPos.getUpPosition()) : undefined;
+        var downLeftPos = (leftPos) ? (leftPos.getDownPosition()) : undefined;
+        var upRightPos = (rightPos) ? (rightPos.getUpPosition()) : undefined;
+        var downRightPos = (rightPos) ? (rightPos.getDownPosition()) : undefined;
+        if(upLeftPos) diagPosArray.push(upLeftPos);
+        if(downRightPos) diagPosArray.push(downRightPos);
+        if(downLeftPos) diagPosArray.push(downLeftPos);
+        if(upRightPos) diagPosArray.push(upRightPos);
+        return diagPosArray;
+    }
 }
