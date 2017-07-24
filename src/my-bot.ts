@@ -35,7 +35,7 @@ export class MyBot {
         for(var i = 0; i < shots.length; ++i) {
             var pos = new Position(shots[i].Position.Row, shots[i].Position.Column);
             var posString = pos.getString();
-            if(shots[i].Washit) hitMap[posString] = true;
+            if(shots[i].WasHit) hitMap[posString] = true;
         }
         return hitMap;
     }
