@@ -22,8 +22,21 @@ export class SecondStrategy {
             iterPos = iterPos.getNextPosition();
         }
         //lastly go through all the positions in the table and shoot the first one which is available
-        iterPos = new Position("A", 1);
-        var positionString = iterPos.getString();
+        var firstPos: Position = new Position("A", 1);
+        if(!triedMap[firstPos.getString()]) {
+            availablePos.push(firstPos);
+        }
+        iterPos = firstPos.getNextPosition();
+        var availablePos : Position[] = [];
+        while(iterPos.row != firstPos.row || iterPos.column != firstPos.column) {
+            if(!triedMap[iterPos.getString()]) {
+                availablePos.push(iterPos);
+            }
+            iterPos = iterPos.getNextPosition();
+        }
+        var randomIndex = Math.floor(Math.random() * availablePos.length);
+        return availablePos[randomIndex];
+        /* var positionString = iterPos.getString();
         var passedTrough : number = 0;
         var hitSoFar = Object.keys(hitMap).length;
         if(hitSoFar >= 13) {
@@ -66,6 +79,6 @@ export class SecondStrategy {
                 var positionString = iterPos.getString();  
             }
             return iterPos;
-        }
+        } */
     }
 }
