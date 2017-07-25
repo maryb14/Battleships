@@ -72,7 +72,7 @@ export class MyBot {
             triedMap = this.markUpDownDiagonal(pos, leftPos, triedMap);
         }
         if(hitMap[thisString] && hitMap[rightString]) {
-            triedMap = this.markUpDownDiagonal(pos, leftPos, triedMap);
+            triedMap = this.markUpDownDiagonal(pos, rightPos, triedMap);
         }
         return triedMap;
     }
