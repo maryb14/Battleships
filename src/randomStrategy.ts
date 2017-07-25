@@ -1,32 +1,26 @@
 import {Position} from './position'
+import {Strategy} from './strategy'
+
+type PositionDictionary = {[pos: string] : boolean}
  
-export class RandomStrategy {
-    constructor() {}
-    public getNextTarget(pos: Position, triedMap: { [ pos: string] : boolean }, hitMap: { [ pos: string] : boolean }): Position  {
+export class RandomStrategy extends Strategy {
+    public getNextTarget(pos: Position, triedMap: PositionDictionary, hitMap: PositionDictionary): Position  {
         //first shoot at position that have 2 neighbours already hit
-        var iterPos = new Position("A", 1);
-        while(iterPos.row != "J" || iterPos.column != 10) {
-            var positionString = iterPos.getString();
-            if(!triedMap[positionString] && iterPos.hasTwoNeighbours(hitMap)){
-                return iterPos;
-            }
-            iterPos = iterPos.getNextPosition();
-        }
+        var nextPos: any = this.shootAtPositionsWith2HitNeighbours(triedMap, hitMap);
+        if(nextPos) return nextPos;
         //secondly shoot at position which have one neighbour hit
-        var iterPos = new Position("A", 1);
-        while(iterPos.row != "J" || iterPos.column != 10) {
-            var positionString = iterPos.getString();
-            if(!triedMap[positionString] && iterPos.hasOneNeighbour(hitMap)){
-                return iterPos;
-            }
-            iterPos = iterPos.getNextPosition();
-        }
+        nextPos = this.shootAtPositionsWith1HitNeighbour(triedMap, hitMap);
+        if(nextPos) return nextPos;
+        return this.shootAtFirstAvailable(triedMap);
+    }
+
+    private shootAtFirstAvailable(triedMap: PositionDictionary){
         //lastly go through all the positions in the table and randomly choose one which is available
         var firstPos: Position = new Position("A", 1);
         if(!triedMap[firstPos.getString()]) {
             availablePos0.push(firstPos);
         }
-        iterPos = firstPos.getNextPosition();
+        var iterPos = firstPos.getNextPosition();
         //array of available position with 0 neighbours tried
         var availablePos0 : Position[] = [];
         //array of available position with 1 neighbour tried
@@ -46,16 +40,18 @@ export class RandomStrategy {
         //this strategy goes through the three arrays in order and randomly picks an available positions
         //from the first one that contains some positions
         if(availablePos0.length > 0) {
-            var randomIndex = Math.floor(Math.random() * availablePos0.length);
-            return availablePos0[randomIndex];
+           return RandomStrategy.getRandomElementFromArray(availablePos0);
         }
         else if(availablePos1.length > 0) {
-            var randomIndex = Math.floor(Math.random() * availablePos1.length);
-            return availablePos1[randomIndex];
+            return RandomStrategy.getRandomElementFromArray(availablePos1);
         }
         else {
-            var randomIndex = Math.floor(Math.random() * availablePos2.length);
-            return availablePos2[randomIndex];
+            return RandomStrategy.getRandomElementFromArray(availablePos2);
         }
+    }
+
+    private static getRandomElementFromArray(someArray: any[]){
+        var randomIndex = Math.floor(Math.random() * someArray.length);
+        return someArray[randomIndex];
     }
 }
